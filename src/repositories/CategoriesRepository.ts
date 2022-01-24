@@ -29,6 +29,14 @@ class RepositoriesCategory {
   list(): Category[] {
     return this.categories;
   }
+
+  findByName(name: string): Category {
+    const categoryExistis = this.categories.find(
+      (category) => category.name === name
+    );
+
+    return categoryExistis;
+  }
 }
 
 export { RepositoriesCategory };
