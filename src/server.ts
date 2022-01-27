@@ -1,5 +1,5 @@
 import express from "express";
-import { baseIndex } from "./routes/baseIndex";
+import { baseIndex } from "./routes/index";
 import { categoriesRoute } from "./routes/categories.route";
 
 const app = express();
