@@ -1,10 +1,6 @@
 import { Category } from "../models/Category";
 import { v4 as uuidV4 } from "uuid";
-
-interface ICreateCategoryDTO {
-  name: string;
-  description: string;
-}
+import { ICreateCategoryDTO } from "./ICategoriesRepository";
 
 class RepositoriesCategory {
   private categories: Category[];
@@ -22,6 +18,10 @@ class RepositoriesCategory {
       description,
       created_at: new Date(),
     });
+
+    if (!name || !description) {
+      throw new Error("Name and description are required");
+    }
 
     this.categories.push(category);
   }
