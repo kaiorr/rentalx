@@ -1,8 +1,11 @@
 import { Category } from "../models/Category";
 import { v4 as uuidV4 } from "uuid";
-import { ICreateCategoryDTO } from "./ICategoriesRepository";
+import {
+  ICatergoriesRepository,
+  ICreateCategoryDTO,
+} from "./ICategoriesRepository";
 
-class RepositoriesCategory {
+class RepositoriesCategory implements ICatergoriesRepository {
   private categories: Category[];
 
   constructor() {
@@ -22,12 +25,12 @@ class RepositoriesCategory {
     if (!name || !description) {
       throw new Error("Name and description are required");
     }
-
     this.categories.push(category);
   }
 
   list(): Category[] {
-    return this.categories;
+    const orderArr = this.categories.reverse();
+    return orderArr;
   }
 
   findByName(name: string): Category {
