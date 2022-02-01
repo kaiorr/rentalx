@@ -1,13 +1,9 @@
 import express from "express";
-import { baseIndex } from "./routes/index";
-import { categoriesRoute } from "./routes/categories.route";
-import { specificationsRoute } from "./routes/specifications.route";
+import { router } from "./routes";
 
 const app = express();
 
 app.use(express.json());
-app.use(baseIndex);
-app.use(categoriesRoute);
-app.use(specificationsRoute);
+app.use(router);
 
 app.listen(3333);

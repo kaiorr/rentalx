@@ -1,12 +1,10 @@
 import { Router } from "express";
+import { categoriesRoute } from "./categories.route";
+import { specificationsRoute } from "./specifications.route";
 
-const baseIndex = Router();
+const router = Router();
 
-baseIndex.get("/", (request, response) => {
-  if (!response.status(200)) {
-    return response.json("Deu Erro... Chama o Seniorzão...");
-  }
-  return response.json("Service is running <3");
-});
+router.use(categoriesRoute);
+router.use(specificationsRoute);
 
-export { baseIndex };
+export { router };
