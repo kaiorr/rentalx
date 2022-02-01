@@ -5,7 +5,7 @@ import {
   ISpecificationRepository,
 } from "./ISpecificationsRepository";
 
-class SpecificationsRepositort implements ISpecificationRepository {
+class RepositoriesSpecification implements ISpecificationRepository {
   private specifications: Specification[];
 
   constructor() {
@@ -25,12 +25,12 @@ class SpecificationsRepositort implements ISpecificationRepository {
     if (!name || !description) {
       throw new Error("Name and description are required");
     }
-
     this.specifications.push(specification);
   }
 
   list(): Specification[] {
-    return this.specifications;
+    const orderArr = this.specifications.reverse();
+    return orderArr;
   }
 
   findByName(name: string): Specification {
@@ -41,4 +41,4 @@ class SpecificationsRepositort implements ISpecificationRepository {
   }
 }
 
-export { SpecificationsRepositort };
+export { RepositoriesSpecification };

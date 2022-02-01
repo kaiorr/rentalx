@@ -5,7 +5,7 @@ import { CreateCategoryService } from "../modules/cars/services/CreateCategorySe
 const categoriesRoute = Router();
 const categoriesRepository = new RepositoriesCategory();
 
-categoriesRoute.post("/categories", (request, response) => {
+categoriesRoute.post("/category", (request, response) => {
   const { name, description } = request.body;
 
   const createCategoriService = new CreateCategoryService(categoriesRepository);
