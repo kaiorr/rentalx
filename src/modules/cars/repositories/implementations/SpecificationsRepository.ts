@@ -1,9 +1,9 @@
-import { Specification } from "../models/Specification";
+import { Specification } from "../../models/Specification";
 import { v4 as uuidV4 } from "uuid";
 import {
   ICreateSpecificationDTO,
   ISpecificationRepository,
-} from "./ISpecificationsRepository";
+} from "../ISpecificationsRepository";
 
 class RepositoriesSpecification implements ISpecificationRepository {
   private specifications: Specification[];
