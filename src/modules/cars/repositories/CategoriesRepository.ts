@@ -8,8 +8,17 @@ import {
 class RepositoriesCategory implements ICatergoriesRepository {
   private categories: Category[];
 
-  constructor() {
+  private static INSTANCE: RepositoriesCategory;
+
+  private constructor() {
     this.categories = [];
+  }
+
+  static getInstance(): RepositoriesCategory {
+    if (!RepositoriesCategory.INSTANCE) {
+      RepositoriesCategory.INSTANCE = new RepositoriesCategory();
+    }
+    return RepositoriesCategory.INSTANCE;
   }
 
   create({ name, description }: ICreateCategoryDTO): void {
