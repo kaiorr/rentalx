@@ -24,6 +24,7 @@ class UploadFileCategoryUseCase {
           chunks.push({ name, description });
         })
         .on("end", () => {
+          fs.promises.unlink(file.path);
           resolve(chunks);
         })
         .on("error", (err) => {
@@ -35,16 +36,18 @@ class UploadFileCategoryUseCase {
   async execute(file: Express.Multer.File): Promise<void> {
     const streamCategories = await this.loadableFile(file);
 
-    for (const exists of streamCategories) {
-      const category = this.categoryRepository.findByName(exists.name);
+    streamCategories.map(async (category) => {
+      const { name, description } = category;
+      const existsCategory = this.categoryRepository.findByName(name);
 
-      if (!category) {
-        this.categoryRepository.create({
-          name: exists.name,
-          description: exists.description,
-        });
+      try {
+        if (!existsCategory) {
+          this.categoryRepository.create({ name, description });
+        }
+      } catch (existsCategory) {
+        throw new Error("Category already exists!");
       }
-    }
+    });
   }
 }
 
