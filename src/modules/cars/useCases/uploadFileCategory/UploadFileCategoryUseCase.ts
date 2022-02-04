@@ -1,21 +1,50 @@
 import fs from "fs";
 import { parse } from "csv-parse";
+import { ICatergoriesRepository } from "../../repositories/ICategoriesRepository";
+
+interface IStreamFile {
+  name: string;
+  description: string;
+}
 
 class UploadFileCategoryUseCase {
-  execute(file: Express.Multer.File): void {
-    const stream = fs.createReadStream(file.path);
-    const parser = parse();
-    const chunks = [];
+  constructor(private categoryRepository: ICatergoriesRepository) {}
 
-    stream.pipe(parser);
+  loadableFile(file: Express.Multer.File): Promise<IStreamFile[]> {
+    return new Promise((resolve, reject) => {
+      const stream = fs.createReadStream(file.path);
+      const chunks: IStreamFile[] = [];
+      const parser = parse();
 
-    parser.on("readable", () => {
-      let chunk: any;
-      while ((chunk = parser.read())) {
-        chunks.push(chunk);
-        console.log(chunk);
-      }
+      stream.pipe(parser);
+
+      parser
+        .on("data", async (file) => {
+          const [name, description] = file;
+          chunks.push({ name, description });
+        })
+        .on("end", () => {
+          resolve(chunks);
+        })
+        .on("error", (err) => {
+          reject(err);
+        });
     });
+  }
+
+  async execute(file: Express.Multer.File): Promise<void> {
+    const streamCategories = await this.loadableFile(file);
+
+    for (const exists of streamCategories) {
+      const category = this.categoryRepository.findByName(exists.name);
+
+      if (!category) {
+        this.categoryRepository.create({
+          name: exists.name,
+          description: exists.description,
+        });
+      }
+    }
   }
 }
 
