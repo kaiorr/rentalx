@@ -1,4 +1,4 @@
-import { Category } from "../../models/Category";
+import { Category } from "../../entities/Category";
 import { v4 as uuidV4 } from "uuid";
 import {
   ICatergoriesRepository,
