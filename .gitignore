@@ -1,3 +1,9 @@
 node_modules
 ./dist
 .vscode
+.vscode-test
+.package-lock.json
+.yarn-integrity
+.yarn-metadata.json
+.yarn-error.log
+.yarn-debug.log
