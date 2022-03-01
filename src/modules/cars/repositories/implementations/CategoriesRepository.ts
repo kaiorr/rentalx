@@ -1,53 +1,30 @@
-import { Category } from "../../models/Category";
-import { v4 as uuidV4 } from "uuid";
+import { Repository, getRepository } from "typeorm";
+import { Category } from "../../entities/Category";
 import {
   ICatergoriesRepository,
   ICreateCategoryDTO,
 } from "../ICategoriesRepository";
 
 class RepositoriesCategory implements ICatergoriesRepository {
-  private categories: Category[];
+  private repository: Repository<Category>;
 
-  private static INSTANCE: RepositoriesCategory;
-
-  private constructor() {
-    this.categories = [];
+  constructor() {
+    this.repository = getRepository(Category);
   }
 
-  static getInstance(): RepositoriesCategory {
-    if (!RepositoriesCategory.INSTANCE) {
-      RepositoriesCategory.INSTANCE = new RepositoriesCategory();
-    }
-    return RepositoriesCategory.INSTANCE;
+  async create({ name, description }: ICreateCategoryDTO): Promise<void> {
+    const category = this.repository.create({ name, description });
+    await this.repository.save(category);
   }
 
-  create({ name, description }: ICreateCategoryDTO): void {
-    const category = new Category();
-
-    Object.assign(category, {
-      id: uuidV4(),
-      name,
-      description,
-      created_at: new Date(),
-    });
-
-    if (!name || !description) {
-      throw new Error("Name and description are required");
-    }
-    this.categories.push(category);
+  async list(): Promise<Category[]> {
+    const categories = await this.repository.find();
+    return categories;
   }
 
-  list(): Category[] {
-    const orderArr = this.categories.reverse();
-    return orderArr;
-  }
-
-  findByName(name: string): Category {
-    const categoryExistis = this.categories.find(
-      (category) => category.name === name
-    );
-
-    return categoryExistis;
+  async findByName(name: string): Promise<Category> {
+    const category = await this.repository.findOne({ name });
+    return category;
   }
 }
 
