@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-@Entity()
+@Entity("categories")
 class Category {
   @PrimaryGeneratedColumn("uuid")
   id?: string;

@@ -2,9 +2,9 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username": "kaio",
-  "password": "123456",
-  "database": "postgres-node",
+  "username": "docker",
+  "password": "ignite",
+  "database": "rentalx",
   "migrations": [
     "./src/database/migrations/*.ts"
   ],
